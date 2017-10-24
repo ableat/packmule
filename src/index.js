@@ -38,9 +38,6 @@ PackMule.prototype.createFS = function(token, customTags, callback) {
             {
                 Key: "Name",
                 Value: "packmule"
-            }, {
-                Key: "Creation_Date",
-                Value: (new Date).getTime().toString()
             }
         ];
 
@@ -53,14 +50,10 @@ PackMule.prototype.createFS = function(token, customTags, callback) {
             Tags: defaultTags
         };
 
-        efs.createTags(params, function(err, data) {
-            if (err) {
-                console.log(err, err.stack);
-                return;
-            }
-
+        efs.createTags(params, function(ierr, idata) {
             if (typeof callback === "function") {
-                callback();
+                if (err) ierr = err;
+                callback(ierr, data);
             }
         });
     });
@@ -87,6 +80,8 @@ PackMule.prototype.destroyFS = function(token, callback) {
 
             if (fileSystems.length > 1) {
                 throw new Error('describeFileSystems method returned an array greater than one.');
+            } else if (fileSystems.length === 0) {
+                throw new Error('describeFileSystems method returned an array of length zero.');
             }
 
             this.fileSystemId = fileSystems[0].FileSystemId;
@@ -95,13 +90,8 @@ PackMule.prototype.destroyFS = function(token, callback) {
                 FileSystemId: this.fileSystemId
             };
             efs.deleteFileSystem(params, function(err, data) {
-                if (err) {
-                    console.log(err, err.stack);
-                    return;
-                }
-
                 if (typeof callback === "function") {
-                    callback();
+                    callback(err, data);
                 }
             });
         }
