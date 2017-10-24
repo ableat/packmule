@@ -8,9 +8,6 @@ function PackMule(options) {
         throw new Error("PackMule expects type: object for \"options\".");
     }
 
-    //DEBUG
-    console.log(JSON.stringify(options))
-
     AWS.config.update(options);
     efs = new AWS.EFS();
 };
