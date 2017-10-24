@@ -3,7 +3,7 @@
   <br>
 </h1>
 
-<h4 align="center">Simple wrapper fo creating <a href="https://aws.amazon.com/efs/">elastic file-systems</a> on AWS.</h4>
+<h4 align="center">Simple wrapper for creating <a href="https://aws.amazon.com/efs/">elastic file-systems</a> on AWS.</h4>
 
 <br>
 
