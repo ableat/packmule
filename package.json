@@ -1,0 +1,22 @@
+{
+  "name": "aws-packmule",
+  "version": "0.0.1",
+  "description": "Simple wrapper for creating elastic file-systems on AWS",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ableat/packmule.git"
+  },
+  "author": "Eli Gladman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ableat/packmule/issues"
+  },
+  "homepage": "https://github.com/ableat/packmule#readme",
+  "dependencies": {
+    "aws-sdk": "^2.138.0"
+  }
+}
