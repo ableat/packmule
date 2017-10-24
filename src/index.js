@@ -12,12 +12,18 @@ function PackMule(options) {
     efs = new AWS.EFS();
 };
 
-PackMule.prototype.createFS = function(token) {
+PackMule.prototype.createFS = function(token, customTags, callback) {
+    var params;
+
     if (typeof token !== 'string') {
         throw new Error("create method expects type: string for \"token\".");
     }
 
-    var params = {
+    if (typeof customTags !== 'object') {
+        throw new Error("create method expects type: array for \"customTags\".");
+    }
+
+    params = {
         CreationToken: token,
         Encrypted: true,
         PerformanceMode: 'generalPurpose'
@@ -27,17 +33,48 @@ PackMule.prototype.createFS = function(token) {
             console.log(err, err.stack);
             return;
         }
+
+        var defaultTags = [
+            {
+                Key: "Name",
+                Value: "packmule"
+            }, {
+                Key: "Creation_Date",
+                Value: (new Date).getTime().toString()
+            }
+        ];
+
+        if (customTags.length > 0) {
+            defaultTags = defaultTags.concat(customTags);
+        };
+
+        params = {
+            FileSystemId: data.FileSystemId,
+            Tags: defaultTags
+        };
+
+        efs.createTags(params, function(err, data) {
+            if (err) {
+                console.log(err, err.stack);
+                return;
+            }
+
+            if (typeof callback === "function") {
+                callback();
+            }
+        });
     });
 };
 
-PackMule.prototype.destroyFS = function(token) {
+PackMule.prototype.destroyFS = function(token, callback) {
     var self = this;
+    var params;
 
     if (typeof token !== 'string') {
         throw new Error("create method expects type: string for \"token\".");
     }
 
-    var params = {
+    params = {
         CreationToken: token
     };
 
@@ -49,7 +86,7 @@ PackMule.prototype.destroyFS = function(token) {
             var fileSystems = data.FileSystems;
 
             if (fileSystems.length > 1) {
-                throw new Error('describeFileSystems method returned an array greater than one.')
+                throw new Error('describeFileSystems method returned an array greater than one.');
             }
 
             this.fileSystemId = fileSystems[0].FileSystemId;
@@ -61,6 +98,10 @@ PackMule.prototype.destroyFS = function(token) {
                 if (err) {
                     console.log(err, err.stack);
                     return;
+                }
+
+                if (typeof callback === "function") {
+                    callback();
                 }
             });
         }
