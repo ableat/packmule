@@ -29,8 +29,8 @@ PackMule.prototype.createFS = function(token, customTags, callback) {
         PerformanceMode: 'generalPurpose'
     };
     efs.createFileSystem(params, function(err, data) {
-        if (err) {
-            console.log(err, err.stack);
+        if (err && typeof callback === "function") {
+            callback(err, data);
             return;
         }
 
@@ -52,7 +52,6 @@ PackMule.prototype.createFS = function(token, customTags, callback) {
 
         efs.createTags(params, function(ierr, idata) {
             if (typeof callback === "function") {
-                if (err) ierr = err;
                 callback(ierr, data);
             }
         });
