@@ -42,7 +42,7 @@ var tags = [
     }
 ];
 
-//the first parameter should be a unique identifier
+//the first parameter should be a unique identifier, in AWS docs this is referred to as a CreationToken
 packmule.createFS('abcdefghijklmnopqrstuvwxyz', tags, function(err, data) {
     if (err) {
         console.log(err, err.stack);
