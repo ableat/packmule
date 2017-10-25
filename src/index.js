@@ -41,7 +41,7 @@ PackMule.prototype.createFS = function(token, customTags, callback) {
             }
         ];
 
-        if (customTags.length > 0) {
+        if (typeof customTags[0] !== 'undefined') {
             defaultTags = defaultTags.concat(customTags);
         };
 

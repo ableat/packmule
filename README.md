@@ -52,6 +52,7 @@ packmule.createFS('abcdefghijklmnopqrstuvwxyz', tags, function(err, data) {
     console.log(data);
 });
 ```
+**if you don't want any custom tags, pass in `[]` **
 
 <br>
 
